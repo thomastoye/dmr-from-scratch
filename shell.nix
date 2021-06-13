@@ -9,6 +9,7 @@ let
       python39Packages.scipy
       python39Packages.numpy
       python39Packages.matplotlib
+      python39Packages.pytest
       # python39Packages.nbdime
     ];
   };
