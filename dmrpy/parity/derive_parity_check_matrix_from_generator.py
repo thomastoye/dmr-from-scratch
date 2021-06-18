@@ -6,4 +6,4 @@ def derive_parity_check_matrix_from_generator(generator: np.ndarray):
     k = generator.shape[0]
     n = generator.shape[1]
 
-    return np.transpose(np.concatenate((np.identity(n-k, dtype=int), np.transpose(generator[:,k:])), axis=1))
+    return np.concatenate((np.transpose(generator[:,k:]), np.identity(n-k, dtype=int)), axis=1)
