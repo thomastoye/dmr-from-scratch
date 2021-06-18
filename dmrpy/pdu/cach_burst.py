@@ -1,21 +1,75 @@
 import numpy as np
 
 # ETSI TS 102 361-1 B.4.1
-CACH_BURST_DEINTERLEAVE_TABLE = [0, 2, 3, 4, 6, 7, 8, 10, 12, 13, 14, 16, 17, 18, 20, 21, 22, 1, 5, 9, 11, 15, 19, 23]
-CACH_BURST_INTERLEAVE_TABLE = [0, 17, 1, 2, 3, 18, 4, 5, 6, 19, 7, 20, 8, 9, 10, 21, 11, 12, 13, 22, 14, 15, 16, 23]
+CACH_BURST_DEINTERLEAVE_TABLE = [
+    0,
+    2,
+    3,
+    4,
+    6,
+    7,
+    8,
+    10,
+    12,
+    13,
+    14,
+    16,
+    17,
+    18,
+    20,
+    21,
+    22,
+    1,
+    5,
+    9,
+    11,
+    15,
+    19,
+    23,
+]
+CACH_BURST_INTERLEAVE_TABLE = [
+    0,
+    17,
+    1,
+    2,
+    3,
+    18,
+    4,
+    5,
+    6,
+    19,
+    7,
+    20,
+    8,
+    9,
+    10,
+    21,
+    11,
+    12,
+    13,
+    22,
+    14,
+    15,
+    16,
+    23,
+]
 
 
 def interleave_cach_burst(cach_burst, interleave_table=CACH_BURST_INTERLEAVE_TABLE):
     result = 0
 
-    for i in range(23,-1, -1):
+    for i in range(23, -1, -1):
         mask = 2 ** (interleave_table[i])
         result = (result << 1) + ((cach_burst & mask) >> (interleave_table[i]))
 
     return result
 
+
 def deinterleave_cach_burst(cach_burst):
-    return interleave_cach_burst(cach_burst, interleave_table=CACH_BURST_DEINTERLEAVE_TABLE)
+    return interleave_cach_burst(
+        cach_burst, interleave_table=CACH_BURST_DEINTERLEAVE_TABLE
+    )
+
 
 # Purpose of CACH (ETSI TS 102 361-1 Section 4.5):
 #  1. Indicate the usage of the inbound time slot
