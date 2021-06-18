@@ -18,5 +18,6 @@ in
     buildInputs = [
       customPython
       git-lfs
+      gnumake
     ];
   }
