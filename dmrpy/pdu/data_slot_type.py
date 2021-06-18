@@ -2,7 +2,7 @@ class DataSlotTypePdu:
     """
     Section 6.2
     Section 9.1.3
-    Parity: Golay (20,8) FEC 
+    Parity: Golay (20,8) FEC
     """
 
     def __init__(self, cc: int, data_type: int, parity: int) -> None:
@@ -14,6 +14,6 @@ class DataSlotTypePdu:
     def create_from_binary(data: int):
         cc = (data >> 16) & 0x4
         data_type = (data >> 12) & 0x4
-        parity = data & 0xfff
+        parity = data & 0xFFF
 
         return DataSlotTypePdu(cc, data_type, parity)

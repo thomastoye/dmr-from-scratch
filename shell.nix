@@ -11,6 +11,7 @@ let
       python39Packages.matplotlib
       python39Packages.pytest
       # python39Packages.nbdime
+      python39Packages.black
     ];
   };
 in
