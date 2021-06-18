@@ -1,7 +1,6 @@
 class DataSlotTypePdu:
     """
-    Section 6.2
-    Section 9.1.3
+    ETSI TS 102 361-1 Section 6.2; Section 9.1.3
     Parity: Golay (20,8) FEC
     """
 
