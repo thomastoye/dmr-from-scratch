@@ -4,9 +4,22 @@ from dmrpy.pdu.cach_burst import (
     interleave_cach_burst,
 )
 
-# def test_1():
-#     burst = CachBurst.create_from_burst_binary(11977059)
-#     assert burst.has_valid_fec()
+
+def test_create_from_burst_binary():
+    burst = CachBurst.create_from_burst_binary(0xb6c163)
+
+    # 1 0 10 011 01111010001010001
+    # | | |  |   Payload
+    # | | |  FEC
+    # | | LCSS
+    # | TC
+    # AT
+
+    assert burst.has_valid_fec()
+    assert burst.payload == 0xf451
+    assert burst.access == 1
+    assert burst.numbering == 0
+    assert burst.framing == 2
 
 
 def test_interleaving_then_deinterleaving_yields_same_result():

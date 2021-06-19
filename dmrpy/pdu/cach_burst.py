@@ -1,3 +1,5 @@
+from dmrpy.parity.get_syndrome_for_word import get_syndrome_for_word
+from dmrpy.parity.hamming_7_4_3 import parity_check_matrix
 import numpy as np
 
 # ETSI TS 102 361-1 B.4.1
@@ -27,6 +29,8 @@ CACH_BURST_DEINTERLEAVE_TABLE = [
     19,
     23,
 ]
+
+# ETSI TS 102 361-1 B.4.1
 CACH_BURST_INTERLEAVE_TABLE = [
     0,
     17,
@@ -118,19 +122,17 @@ class CachBurst:
     # Only TACT is protected by FEC
     def has_valid_fec(self):
         return np.array_equal(
-            (self.tact @ HAMMING_7_4_3_PARITY_CHECK) % 2, np.array([0, 0, 0])
+            get_syndrome_for_word(self.tact, parity_check_matrix), np.array([0, 0, 0])
         )
 
     def create_from_burst_binary(data):
-        deinterleaved = deinterleave_cach_burst(
-            [int(i) for i in bin(data)[2:].zfill(24)]
-        )
+        deinterleaved = deinterleave_cach_burst(data)
 
         return CachBurst(
-            bit_array_to_decimal(deinterleaved),
-            deinterleaved[0],
-            deinterleaved[1],
-            (deinterleaved[2] << 1) + deinterleaved[3],
-            (deinterleaved[4] << 2) + (deinterleaved[5] << 1) + deinterleaved[6],
-            bit_array_to_decimal(deinterleaved[7:]),
+            deinterleaved,
+            (deinterleaved >> 23) & 0x1,
+            (deinterleaved >> 22) & 0x1,
+            (deinterleaved >> 20) & 0x3,
+            (deinterleaved >> 17) & 0x7,
+            deinterleaved & ((2 ** 17) - 1),
         )
