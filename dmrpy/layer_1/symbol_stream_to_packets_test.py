@@ -1,5 +1,3 @@
-import numpy as np
-from numpy.testing._private.utils import assert_array_equal
 from dmrpy.fixtures.symbol_stream import (
     EXAMPLE_SYMBOL_STREAM_SHORT,
 )

@@ -6,7 +6,7 @@ from dmrpy.pdu.cach_burst import (
 
 
 def test_create_from_burst_binary():
-    burst = CachBurst.create_from_burst_binary(0xb6c163)
+    burst = CachBurst.create_from_burst_binary(0xB6C163)
 
     # 1 0 10 011 01111010001010001
     # | | |  |   Payload
@@ -16,10 +16,13 @@ def test_create_from_burst_binary():
     # AT
 
     assert burst.has_valid_fec()
-    assert burst.payload == 0xf451
-    assert burst.access == 1
-    assert burst.numbering == 0
-    assert burst.framing == 2
+    assert burst.payload == 0xF451
+    assert burst.at == 1
+    assert burst.tc == 0
+    assert burst.lcss == 2
+
+    assert burst.raw_deinterleaved() == 0xA6F451
+    assert burst.raw_interleaved() == 0xB6C163
 
 
 def test_interleaving_then_deinterleaving_yields_same_result():

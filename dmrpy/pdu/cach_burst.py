@@ -83,10 +83,10 @@ class CachBurst:
     # at      : access (1 bit)               \
     # tc      : numbering (1 bit)            |
     # ls/lcss : framing (2 bits)             |     Known together as "TDMA Access Channel Type" (TACT) bits
-    # h       : hamming parity bits (3 bits) /
-    # p       : payload (17 bits)            --> Payload NOT protected by Hamming FEC
-    def __init__(self, raw, access, numbering, framing, hamming, payload):
-        self.raw = raw
+    # fec     : hamming parity bits (3 bits) /
+    # payload : payload (17 bits)            --> Payload NOT protected by Hamming FEC
+    def __init__(self, at, tc, lcss, payload, fec=None):
+        # TODO if FEC is None, calculate FEC
 
         # Interpretation of at and tc (ETSI TS 102 361-1 Section 6.3):
         #  Where DMR activity is present on the outbound channel,
@@ -94,30 +94,42 @@ class CachBurst:
         #  the next slot on the inbound channel whose TDMA channel number
         #  is indicated by the TC bit is "Idle" or "Busy"
         # Typically a BS shall set the AT to "Busy" while DMR activity is present on the inbound channel
-        self.access = access
-        self.numbering = numbering
+        self.at = at
+        self.tc = tc
 
         # LCSS indicates that this burst contains the beginning, end, or continuation of an LC or CSBK signalling
         # Due to the small number of bits available, there is no single fragment LC signalling defined
-        self.framing = framing
+        self.lcss = lcss
 
-        self.hamming = hamming
+        self.fec = fec
 
         self.payload = payload
         self.tact = np.array(
             [
-                access,
-                numbering,
-                (framing & 0x2) >> 1,
-                (framing & 0x1),
-                (hamming & 0x4) >> 2,
-                (hamming & 0x2) >> 1,
-                (hamming & 0x1),
+                at,
+                tc,
+                (lcss & 0x2) >> 1,
+                (lcss & 0x1),
+                (fec & 0x4) >> 2,
+                (fec & 0x2) >> 1,
+                (fec & 0x1),
             ]
         )
 
     def __repr__(self):
-        return f'CACH burst (FEC { "" if self.has_valid_fec() else "in" }valid): at {self.access}, tc {self.numbering}, ls {hex(self.framing)}, payload {hex(self.payload)} [raw (deinterleaved) {hex(self.raw)}]'
+        return f"CachBurst(at={self.at}, tc={self.tc}, lcss={self.lcss}, fec={self.fec}, payload={hex(self.payload)})"
+
+    def raw_deinterleaved(self):
+        return (
+            (self.at << 23)
+            + (self.tc << 22)
+            + (self.lcss << 20)
+            + (self.fec << 17)
+            + self.payload
+        )
+
+    def raw_interleaved(self):
+        return interleave_cach_burst(self.raw_deinterleaved())
 
     # Only TACT is protected by FEC
     def has_valid_fec(self):
@@ -129,10 +141,9 @@ class CachBurst:
         deinterleaved = deinterleave_cach_burst(data)
 
         return CachBurst(
-            deinterleaved,
-            (deinterleaved >> 23) & 0x1,
-            (deinterleaved >> 22) & 0x1,
-            (deinterleaved >> 20) & 0x3,
-            (deinterleaved >> 17) & 0x7,
-            deinterleaved & ((2 ** 17) - 1),
+            at=(deinterleaved >> 23) & 0x1,
+            tc=(deinterleaved >> 22) & 0x1,
+            lcss=(deinterleaved >> 20) & 0x3,
+            fec=(deinterleaved >> 17) & 0x7,
+            payload=deinterleaved & ((2 ** 17) - 1),
         )
