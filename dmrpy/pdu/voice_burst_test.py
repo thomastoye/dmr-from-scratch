@@ -2,23 +2,53 @@ from dmrpy.pdu.voice_burst import VoiceBurst
 
 # TODO EMB/embedded signalling decoding for voice superframes
 VOICE_SUPERFRAME = [
-    VoiceBurst(vs=0xd9291739ca0ec7f59ccc71d270b60c7e56cba1e, emb=None, embedded_signalling=None),
-    VoiceBurst(vs=0xf5b1c31affc6246b8e361b2d015b94e85eda12b, emb=0x8, embedded_signalling=0xaca0aca9),
-    VoiceBurst(vs=0xd9291739ca0ec7f59ccc6dd270b60c7e56cba1e, emb=0xc, embedded_signalling=0x5fd7df71),
-    VoiceBurst(vs=0xfd1c25ae9d8fbe5ae8bae207b1bef221316663, emb=0x8, embedded_signalling=0xa6acb7a6),
-    VoiceBurst(vs=0xd9291739ca0ec7f59ccc6dd270b60c7e56cba1e, emb=0xc, embedded_signalling=0x5fd7df71),
-    VoiceBurst(vs=0x3d70f248ddabc7dcd56cecdb831f8b1b1921b23, emb=0x7, embedded_signalling=0xafb4bbbb)
+    VoiceBurst(
+        vs=0xF968F40102CDB76D9291739CA0E5295C4ECFBDB1E260C7E56CBA1E,
+        emb=None,
+        embedded_signalling=None,
+    ),
+    VoiceBurst(
+        vs=0x4F50E8D839116FEF5B1C31AFFC596BEED8971A16AAB94E85EDA12B,
+        emb=0x8D8B,
+        embedded_signalling=0xACA0ACA9,
+    ),
+    VoiceBurst(
+        vs=0xF968F40102CDB76D9291739CA0E5295C4ECFBDB1E260C7E56CBA1E,
+        emb=0x75F7,
+        embedded_signalling=0x5FD7DF71,
+    ),
+    VoiceBurst(
+        vs=0x8138AB9E23BB520FD1C25AE9D86E3F01D407950CEBEF221316663,
+        emb=0x8D8B,
+        embedded_signalling=0xA6ACB7A6,
+    ),
+    VoiceBurst(
+        vs=0xF968F40102CDB76D9291739CA0E5295C4ECFBDB1E260C7E56CBA1E,
+        emb=0x75F7,
+        embedded_signalling=0x5FD7DF71,
+    ),
+    VoiceBurst(
+        vs=0x2A46ED983DAA4DF3D70F248DDAB382D20B130E34AFF8B1B1921B23,
+        emb=0x8FF8,
+        embedded_signalling=0xAFB4BBBB,
+    ),
 ]
 
+
 def test_create_with_sync():
-    burst = VoiceBurst.create_from_burst_binary(0xf968f40102cdb76d9291739ca0e755fd7df75f75295c4ecfbdb1e260c7e56cba1e)
+    burst = VoiceBurst.create_from_burst_binary(
+        0xF968F40102CDB76D9291739CA0E755FD7DF75F75295C4ECFBDB1E260C7E56CBA1E
+    )
     assert burst.emb == None
     assert burst.embedded_signalling == None
-    assert burst.vs == 0xf968f40102cdb76d9291739ca0e5295c4ecfbdb1e260c7e56cba1e
+    assert burst.vs == 0xF968F40102CDB76D9291739CA0E5295C4ECFBDB1E260C7E56CBA1E
+
 
 def test_create_no_sync():
-    burst = VoiceBurst.create_from_burst_binary(0x4f50e8d839116fef5b1c31affc58daca0aca98b96beed8971a16aab94e85eda12b)
+    burst = VoiceBurst.create_from_burst_binary(
+        0x4F50E8D839116FEF5B1C31AFFC58DACA0ACA98B96BEED8971A16AAB94E85EDA12B
+    )
 
-    assert burst.embedded_signalling == 0xaca0aca9
-    assert burst.emb == 0x8d8b
-    assert burst.vs == 0x4f50e8d839116fef5b1c31affc596beed8971a16aab94e85eda12b
+    assert burst.embedded_signalling == 0xACA0ACA9
+    assert burst.emb == 0x8D8B
+    assert burst.vs == 0x4F50E8D839116FEF5B1C31AFFC596BEED8971A16AAB94E85EDA12B

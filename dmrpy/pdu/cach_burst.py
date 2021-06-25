@@ -99,7 +99,7 @@ class CachBurst:
 
         # LCSS indicates that this burst contains the beginning, end, or continuation of an LC or CSBK signalling
         # Due to the small number of bits available, there is no single fragment LC signalling defined
-        # 
+        #
         # ETSI TS 102 361-1 Section 9.3.3:
         #   0: Either single fragment LC or first fragment of CSBK signalling
         #      (There is no Single fragment LC defined for CACH signalling.)

@@ -8,8 +8,8 @@ from dmrpy.fixtures.symbol_stream import (
 print(
     "\n".join(
         [
-            str(start) + '-' + str(end) + ' ' + str(VoiceBurst.create_from_burst_binary(data)) + '  ' + hex(data)
-            for (start, end, kind, data) in symbol_stream_to_packets(EXAMPLE_SYMBOL_STREAM_SHORT)
+            str(VoiceBurst.create_from_burst_binary(data))
+            for (kind, data) in symbol_stream_to_packets(EXAMPLE_SYMBOL_STREAM_SHORT)
             if kind != "cach"
         ]
     )

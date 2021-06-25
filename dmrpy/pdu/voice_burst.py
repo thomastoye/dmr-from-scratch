@@ -30,16 +30,18 @@ class VoiceBurst:
         emb = None
         embedded_signalling = None
 
-        if (possible_sync == SYNC_PATTERN['BS_VOICE']) or (possible_sync == SYNC_PATTERN['MS_VOICE']):
+        if (possible_sync == SYNC_PATTERN["BS_VOICE"]) or (
+            possible_sync == SYNC_PATTERN["MS_VOICE"]
+        ):
             pass
         else:
             embedded_signalling = (possible_sync >> 8) & 0xFFFFFFFF
             emb = ((possible_sync >> 32) & 0xFF00) + (possible_sync & 0xFF)
 
-        vocoder_socket_bits = ((data >> 48) & ((2**108 - 1) << 108)) + (data & (2**108 - 1))
+        vocoder_socket_bits = ((data >> 48) & ((2 ** 108 - 1) << 108)) + (
+            data & (2 ** 108 - 1)
+        )
 
         return VoiceBurst(
-            vs=vocoder_socket_bits,
-            emb=emb,
-            embedded_signalling=embedded_signalling
+            vs=vocoder_socket_bits, emb=emb, embedded_signalling=embedded_signalling
         )
