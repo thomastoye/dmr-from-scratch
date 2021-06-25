@@ -33,6 +33,13 @@ def test_interleaving_then_deinterleaving_yields_same_result():
 def test_deinterleave_cach_burst():
     assert deinterleave_cach_burst(0xB6C163) == 0xA6F451
 
-
 def test_interleave_cach_burst():
     assert interleave_cach_burst(0xA0B799) == 0xA6F451
+
+def test_cach_burst_raw_interleaved():
+    burst = CachBurst.create_from_burst_binary(0xB6C163)
+    assert burst.raw_interleaved() == 0xB6C163
+
+def test_cach_burst_raw_deinterleaved():
+    burst = CachBurst.create_from_burst_binary(0xB6C163)
+    assert burst.raw_deinterleaved() == 0xA6F451

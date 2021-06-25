@@ -1,3 +1,4 @@
+from dmrpy.pdu.voice_burst import VoiceBurst
 from dmrpy.pdu.cach_burst import CachBurst
 from dmrpy.layer_1.symbol_stream_to_packets import symbol_stream_to_packets
 from dmrpy.fixtures.symbol_stream import (
@@ -7,9 +8,9 @@ from dmrpy.fixtures.symbol_stream import (
 print(
     "\n".join(
         [
-            str(CachBurst.create_from_burst_binary(data))
-            for (kind, data) in symbol_stream_to_packets(EXAMPLE_SYMBOL_STREAM_SHORT)
-            if kind == "cach"
+            str(start) + '-' + str(end) + ' ' + str(VoiceBurst.create_from_burst_binary(data)) + '  ' + hex(data)
+            for (start, end, kind, data) in symbol_stream_to_packets(EXAMPLE_SYMBOL_STREAM_SHORT)
+            if kind != "cach"
         ]
     )
 )
