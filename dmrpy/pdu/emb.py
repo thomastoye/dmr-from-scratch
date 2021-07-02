@@ -11,12 +11,15 @@ class Emb:
         fec: Parity bits (9 bits), Quadratic Residue (16,7,6)
         """
 
-        # TODO if fec is none, calculate parity
-
         self.cc = cc
         self.pi = pi
         self.lcss = lcss
+
+        # TODO if fec is none, calculate parity
         self.fec = fec
+
+    def __repr__(self):
+        return f"Emb(cc={hex(self.cc)}, pi={hex(self.pi)}, lcss={hex(self.lcss)}, fec={hex(self.fec)})"
 
     def raw(self):
         return (self.cc << 12) + (self.pi << 11) + (self.lcss << 9) + self.fec
