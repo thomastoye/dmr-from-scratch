@@ -1,5 +1,12 @@
 # Digital Mobile Radio (DMR) from scratch
 
+## Development
+
+```
+$ nix-shell
+$ make test
+```
+
 ## Resources and references
 
 ETSI standard (*ETSI TS 102 361*):
