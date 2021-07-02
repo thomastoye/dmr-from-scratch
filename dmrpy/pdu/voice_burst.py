@@ -1,3 +1,4 @@
+from dmrpy.pdu.emb import Emb
 from dmrpy.constants import SYNC_PATTERN
 from dmrpy.parity.get_syndrome_for_word import get_syndrome_for_word
 from dmrpy.parity.hamming_7_4_3 import parity_check_matrix
@@ -6,12 +7,15 @@ import numpy as np
 
 # ETSI TS 102 361-1 Section ...
 class VoiceBurst:
-    # vs                  : Vocoder socket bits (216 bits)
-    # emb                 : Embedded signalling field (16 bits)
-    # embedded_signalling : Either link control (LC) or reverse channel (RC) information (32 bits)
     def __init__(self, vs, emb=None, embedded_signalling=None):
+        """
+        Parameters:
+        vs                  : Vocoder socket bits (216 bits)
+        emb                 : Embedded signalling field (16 bits)
+        embedded_signalling : Either link control (LC) or reverse channel (RC) information (32 bits)
+        """
         self.vs = vs
-        self.emb = emb
+        self.emb = None if emb is None else Emb.create_from_binary(emb)
         self.embedded_signalling = embedded_signalling
 
     def __repr__(self):
