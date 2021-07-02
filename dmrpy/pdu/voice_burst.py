@@ -2,8 +2,6 @@ from dmrpy.pdu.emb import Emb
 from dmrpy.constants import SYNC_PATTERN
 from dmrpy.parity.get_syndrome_for_word import get_syndrome_for_word
 from dmrpy.parity.hamming_7_4_3 import parity_check_matrix
-import numpy as np
-
 
 # ETSI TS 102 361-1 Section ...
 class VoiceBurst:
