@@ -48,3 +48,7 @@ DMR uses a lot of different error-correcting codes and checksums. The descriptio
 * Reed-Solomon (12,9,4)
 * 8-bit CRC, 32-bit CRC, CRC-CCITT, CRC-9, 7-bit CRC, CRC mask for Data Types
 * 5-bit Checksum
+
+## Currently working on
+
+* Decoding full LCs from voice superframes
