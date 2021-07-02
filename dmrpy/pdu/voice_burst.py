@@ -19,7 +19,7 @@ class VoiceBurst:
         self.embedded_signalling = embedded_signalling
 
     def __repr__(self):
-        return f"VoiceBurst(vs={hex(self.vs)}, emb={hex(self.emb) if self.emb is not None else None}, embedded_signalling={hex(self.embedded_signalling) if self.embedded_signalling is not None else None})"
+        return f"VoiceBurst(vs={hex(self.vs)}, emb={hex(self.emb.raw()) if self.emb is not None else None}, embedded_signalling={hex(self.embedded_signalling) if self.embedded_signalling is not None else None})"
 
     def raw(self):
         return None

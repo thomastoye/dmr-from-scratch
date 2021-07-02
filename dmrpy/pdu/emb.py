@@ -1,9 +1,14 @@
-# ETSI TS 102 361-1 Section 9.1.2
+from dmrpy.util.to_numpy_bit_array import to_numpy_bit_array
+from dmrpy.parity.get_syndrome_for_word import get_syndrome_for_word
+from dmrpy.parity.quadratic_residue_16_7_6 import parity_check_matrix
+import numpy as np
 
 
 class Emb:
     def __init__(self, cc, pi, lcss, fec=None):
         """
+        ETSI TS 102 361-1 Section 9.1.2
+
         Parameters:
         cc: Colour code (4 bits)
         pi: Pre-emption and power control indicator (1 bit)
@@ -25,8 +30,11 @@ class Emb:
         return (self.cc << 12) + (self.pi << 11) + (self.lcss << 9) + self.fec
 
     def has_valid_fec(self):
-        # TODO Quadratic Residue (16,7,6)
-        pass
+        word = to_numpy_bit_array(self.raw(), 16)
+        return np.array_equal(
+            get_syndrome_for_word(word, parity_check_matrix),
+            np.array([0, 0, 0, 0, 0, 0, 0, 0, 0]),
+        )
 
     def create_from_binary(data):
         # Data is 16 bits

@@ -1,5 +1,7 @@
 # Digital Mobile Radio (DMR) from scratch
 
+This project is my attempt to decode [Digital Mobile Radio](https://en.wikipedia.org/wiki/Digital_mobile_radio) (DMR) from scratch in idiomatic, modern Python. It's optimized for legibility and ease of understanding rather than performance.
+
 ## Development
 
 ```
