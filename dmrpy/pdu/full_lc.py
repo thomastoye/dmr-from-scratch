@@ -1,3 +1,6 @@
+from dmrpy.parity.five_bit_checksum import calculate_five_bit_checksum
+
+
 class FullLC:
     def __init__(self, pf, reserved, flco, fid, data, cs_5bit=None):
         """See ETSI TS 102 361-1 Section 9.1.6
@@ -18,6 +21,16 @@ class FullLC:
         self.data = data
         self.cs_5bit = cs_5bit
 
+    def raw(self):
+        """Create binary representation (without checksum)"""
+        return (
+            (self.pf << 71)
+            + (self.reserved << 70)
+            + (self.flco << 64)
+            + (self.fid << 56)
+            + self.data
+        )
+
     def create_from_embedded_signalling_binary(binary, checksum):
         # 77 bits
         return FullLC(
@@ -29,9 +42,13 @@ class FullLC:
             cs_5bit=checksum,
         )
 
+    def checksum_matches(self):
+        # TODO handle case where checksum is not 5-bit checksum
+        return calculate_five_bit_checksum(self.raw()) == self.cs_5bit
+
     def create_from_header_or_terminator_burst_binary(binary):
-        # 96 bits
-        return FullLC()
+        # 96 bits - TODO
+        pass
 
     def create_from_bptr_transmit_matrix(matrix):
         pass

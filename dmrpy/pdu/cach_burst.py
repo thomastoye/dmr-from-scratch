@@ -62,7 +62,7 @@ CACH_BURST_INTERLEAVE_TABLE = [
 def interleave_cach_burst(cach_burst, interleave_table=CACH_BURST_INTERLEAVE_TABLE):
     result = 0
 
-    for i in range(23, -1, -1):
+    for i in reversed(range(0, 24)):
         mask = 2 ** (interleave_table[i])
         result = (result << 1) + ((cach_burst & mask) >> (interleave_table[i]))
 

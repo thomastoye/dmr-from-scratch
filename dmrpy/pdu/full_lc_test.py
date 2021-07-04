@@ -167,9 +167,15 @@ def test_full_lc_create_from_binary():
     lc = FullLC.create_from_embedded_signalling_binary(0x1020000C302F9BE5, 0xC)
 
     assert lc.pf == 0
+    assert lc.reserved == 0
     assert lc.flco == 0
-    assert lc.fid == 0x10
+    assert (
+        lc.fid == 0x10
+    )  # Strange as fid should be 0x0 for flco=0x0 but this seems to be a valid packet
     assert lc.cs_5bit == 0xC
+    assert lc.data == 0x20000C302F9BE5
+    assert lc.raw() == 0x1020000C302F9BE5
+    assert lc.checksum_matches()
 
 
 # def test_x():
