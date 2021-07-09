@@ -178,9 +178,6 @@ def test_full_lc_create_from_binary():
     assert lc.checksum_matches()
 
 
-# def test_x():
-#     assert_array_equal(transmit_matrix[3], np.array([]))
-
 # Now we need to reshape the "transmit matrix" (actually the received matrix in our case)
 
 ## 2. BPTC
