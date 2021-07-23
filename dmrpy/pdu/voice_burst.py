@@ -1,9 +1,7 @@
 from dmrpy.pdu.emb import Emb
 from dmrpy.constants import SYNC_PATTERN
-from dmrpy.parity.get_syndrome_for_word import get_syndrome_for_word
-from dmrpy.parity.hamming_7_4_3 import parity_check_matrix
 
-# ETSI TS 102 361-1 Section ...
+# ETSI TS 102 361-1 Section 6.1
 class VoiceBurst:
     def __init__(self, vs, emb=None, embedded_signalling=None):
         """

@@ -9,6 +9,20 @@ class State(Enum):
     RECEIVING_TRAFFIC_BURST = 3
 
 
+class Layer1CachBurst:
+    def __init__(self, data: int, start_index: int):
+        self.data = data
+        self.start_index = start_index
+        self.symbol_length = 12
+
+
+class Layer1TrafficBurst:
+    def __init__(self, data: int, start_index: int):
+        self.data = data
+        self.start_index = start_index
+        self.symbol_length = 132
+
+
 def symbol_to_decimal(symbol):
     # ETSI TS 102 361-1 10.2.2.1
     return {
@@ -68,20 +82,20 @@ def symbol_stream_to_packets(symbol_stream: Iterator[int]):
                 # Since we're on the SYNC, we have 108 bits left to receive for this packet
                 symbols_left_to_receive_for_burst = 108 // 2
 
-                yield ("cach", cach_burst)
+                yield Layer1CachBurst(cach_burst, index - 90)
 
         elif state is State.RECEIVING_TRAFFIC_BURST:
 
             if symbols_left_to_receive_for_burst == 0:
                 state = State.RECEIVING_CACH_BURST
                 symbols_left_to_receive_for_burst = 12
-                yield ("traffic", buffer & TRAFFIC_BURST_MASK)
+                yield Layer1TrafficBurst(buffer & TRAFFIC_BURST_MASK, index - 132)
 
         elif state is State.RECEIVING_CACH_BURST:
 
             if symbols_left_to_receive_for_burst == 0:
                 state = State.RECEIVING_TRAFFIC_BURST
                 symbols_left_to_receive_for_burst = 132
-                yield ("cach", buffer & CACH_BURST_MASK)
+                yield Layer1CachBurst(buffer & CACH_BURST_MASK, index - 12)
 
         index = index + 1
