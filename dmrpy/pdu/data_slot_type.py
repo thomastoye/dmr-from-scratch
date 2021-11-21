@@ -39,7 +39,7 @@ class DataSlotTypePdu:
         return f"DataSlotTypePdu(cc={self.cc}, data_type={self.data_type}, parity={hex(self.parity)})"
 
     def raw(self):
-        return (self.cc << 16) + (self.data_type << 12) + (self.parity)
+        return (self.cc << 16) + (self.data_type << 12) + self.parity
 
     def has_valid_fec(self):
         word = to_numpy_bit_array(self.raw(), 20)
@@ -48,6 +48,7 @@ class DataSlotTypePdu:
             np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]),
         )
 
+    @staticmethod
     def create_from_binary(data: int):
         cc = (data >> 16) & 0xF
         data_type = (data >> 12) & 0xF
