@@ -20,6 +20,7 @@ class DataBurst:
     def raw(self):
         pass
 
+    @staticmethod
     def create_from_burst_binary(data):
         # Structure of a data burst:
         #  | Info (98) | Slot type (10) | Embedded signalling / Sync (48) | Slot type (10) | Info (98) |
